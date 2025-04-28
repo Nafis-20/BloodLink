@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'signup_page.dart';
-import 'login.dart';
+import 'login.dart'; // Assuming your login.dart is okay
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // important for Firebase to work
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    print('Firebase Initialization Error: $e');
+  }
   runApp(const MyApp());
 }
 
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         useMaterial3: true,
       ),
-      home: const LandingPage(), // now LandingPage will open first
+      home: const LandingPage(),
     );
   }
 }
@@ -51,7 +54,7 @@ class LandingPage extends StatelessWidget {
               const SizedBox(height: 40),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Button color
+                  backgroundColor: Colors.red,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(

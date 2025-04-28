@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'landing_page.dart';
 import 'signup_page.dart';
+import 'location_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -24,9 +25,12 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text.trim(),
       );
 
+      await updateUserLocation(userCredential.user!.uid);
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LandingPage(userCredential.user!.uid)),
+        MaterialPageRoute(
+            builder: (context) => LandingPage(userCredential.user!.uid)),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -44,9 +48,11 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              Image.asset('assets/logo.png', height: 100), // Add your logo in assets folder
+              Image.asset('assets/logo.png',
+                  height: 100), // Add your logo in assets folder
               const SizedBox(height: 20),
-              Text('Welcome Back!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Text('Welcome Back!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               const SizedBox(height: 40),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -69,14 +75,16 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: Colors.red,
                         minimumSize: Size(double.infinity, 50),
                       ),
-                      child: const Text('Login', style: TextStyle(fontSize: 18)),
+                      child:
+                          const Text('Login', style: TextStyle(fontSize: 18)),
                     ),
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const SignupPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const SignupPage()),
                         );
                       },
                       child: const Text("Don't have an account? Sign up"),

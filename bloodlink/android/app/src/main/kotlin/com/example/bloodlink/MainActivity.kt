@@ -1,4 +1,4 @@
-package com.example.bloodlink
+package com.bnb.bloodlink
 
 import io.flutter.embedding.android.FlutterActivity
 

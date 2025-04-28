@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'login.dart';
 
 class SignupPage extends StatefulWidget {
@@ -44,6 +45,7 @@ class _SignupPageState extends State<SignupPage> {
         'phone': phoneController.text.trim(),
         'dob': dobController.text.trim(),
         'nid': nidController.text.trim(),
+        'role': 'user',
       });
 
       Navigator.pushReplacement(
@@ -54,6 +56,21 @@ class _SignupPageState extends State<SignupPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Registration failed: ${e.toString()}")),
       );
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        dobController.text =
+            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+      });
     }
   }
 
@@ -83,12 +100,19 @@ class _SignupPageState extends State<SignupPage> {
               const SizedBox(height: 15),
               TextField(
                 controller: phoneController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: const InputDecoration(labelText: "Phone Number"),
               ),
               const SizedBox(height: 15),
               TextField(
                 controller: dobController,
-                decoration: const InputDecoration(labelText: "Date of Birth"),
+                readOnly: true,
+                decoration: const InputDecoration(
+                  labelText: "Date of Birth",
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
+                onTap: () => _selectDate(context),
               ),
               const SizedBox(height: 15),
               TextField(
